@@ -97,3 +97,10 @@ Use a Python host (Render, Railway, or a VM). Set `SECRET_KEY` and `AUDIT_KEY` t
 - [ ] Run tests and capture actual passing output.
 - [ ] Record a five-minute demo.
 - [ ] Complete PROMPTS.md with actual prompts, observed mistakes, and real commit URLs. Never invent AI errors or commit links.
+## Local Test Verification
+
+- Security test suite executed using pytest.
+- Verified document access restrictions.
+- Verified permission grant and revocation.
+- Verified viewer upload restrictions.
+- Test result: 4 passed, 0 failed.
