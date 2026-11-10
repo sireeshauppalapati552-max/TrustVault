@@ -1,0 +1,7 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TrustVault</title><link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head><body>
+<header><a class="brand" href="{{ url_for('dashboard') if session.get('uid') else url_for('login') }}">◈ TrustVault</a>
+{% if session.get('uid') %}<nav><a href="{{ url_for('dashboard') }}">Workspace</a>{% if current_user and current_user.role=='owner' %}<a href="{{ url_for('upload') }}">Upload</a>{% endif %}{% if current_user and current_user.role=='admin' %}<a href="{{ url_for('admin') }}">Admin audit</a>{% endif %}
+<form method="post" action="{{ url_for('logout') }}" class="inline"><input type="hidden" name="_csrf" value="{{ csrf_token }}"><button class="link">Sign out</button></form></nav>{% endif %}</header>
+<main>{% with messages=get_flashed_messages() %}{% if messages %}{% for m in messages %}<div class="flash">{{m}}</div>{% endfor %}{% endif %}{% endwith %}{% block content %}{% endblock %}</main>
+<footer>TrustVault · Private document access · Server-side authorisation</footer></body></html>

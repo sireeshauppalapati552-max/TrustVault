@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block content %}<a href="{{url_for('dashboard')}}">← Workspace</a><section class="card"><p class="eyebrow">DOCUMENT DETAILS</p><h1>{{doc.title}}</h1><p class="muted">{{doc.original_name}} · {{doc.size}} bytes · {{doc.category}}</p><p>Owner: <b>{{owner}}</b></p>
+<a class="primary button" href="{{url_for('download',doc_id=doc.id)}}">Download document</a>
+{% if can_edit %}
+<hr><h2>Edit details</h2><form method="post" action="{{url_for('edit_doc',doc_id=doc.id)}}"><input type="hidden" name="_csrf" value="{{csrf_token}}"><label>Title</label><input name="title" value="{{doc.title}}" required><label>Category</label><input name="category" value="{{doc.category}}"><button class="primary">Save changes</button></form>
+{% endif %}
+{% if current_user.id==doc.owner_id %}
+<hr><h2>People with access</h2>{% for grant in grants %}<div class="grant"><span>{{grant.username}} · {{grant.permission}}</span><form method="post" action="{{url_for('revoke',doc_id=doc.id,user_id=grant.user_id)}}"><input type="hidden" name="_csrf" value="{{csrf_token}}"><button class="danger">Revoke</button></form></div>{% else %}<p class="muted">No access grants yet.</p>{% endfor %}
+<h2>Grant access</h2><form method="post" action="{{url_for('grant',doc_id=doc.id)}}"><input type="hidden" name="_csrf" value="{{csrf_token}}"><label>Exact username</label><input name="username" required placeholder="viewer"><label>Permission</label><select name="permission"><option value="read">Read only</option><option value="edit">Read and edit metadata</option></select><button class="primary">Grant access</button></form>
+<hr><form method="post" action="{{url_for('delete_doc',doc_id=doc.id)}}" onsubmit="return confirm('Permanently delete this document?')"><input type="hidden" name="_csrf" value="{{csrf_token}}"><button class="danger">Delete document</button></form>
+{% endif %}
+</section>{% endblock %}
